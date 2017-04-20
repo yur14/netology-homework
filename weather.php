@@ -1,5 +1,5 @@
 <?php
-  error_reporting(E_All);
+  error_reporting(E_ALL);
 	$content = file_get_contents( 'http://api.openweathermap.org/data/2.5/weather?id=703845&units=metric&APPID=4a21703d96888519c19042bd7927ece2');
 	$response = json_decode($content, true);
 	$unit = $response['main'];
