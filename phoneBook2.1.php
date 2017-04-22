@@ -1,11 +1,7 @@
 <?php
- 
-$fileJson = file_get_contents("phoneBook.json");
-
-
+ $fileJson = file_get_contents("phoneBook.json");
 $numbers = json_decode( $fileJson, true);
 //var_dump($numbers);
-
 ?>
 
 <!DOCTYPE html>
@@ -15,8 +11,7 @@ $numbers = json_decode( $fileJson, true);
     <title>Телефонная книга</title>
 </head>
   <body>
-    
-    <style>
+        <style>
       body {font-family: sans-serif;}
         dl {display: table-row;}
     dt, dd {display: table-cell;padding: 5px 10px;}
@@ -135,6 +130,5 @@ $numbers = json_decode( $fileJson, true);
     <dd><?=$numbers[4]["phoneNumber"]?> </dd>
   </dl>
   
-	
 </body>
 </html>
