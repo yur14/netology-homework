@@ -1,0 +1,11 @@
+{
+	"name" : "calculate",
+	"calculate": {
+		"description": "5+5=?",
+		"input": {
+			"type": "text",
+			"name": "summ"
+		},
+		"result": 10
+	}
+}
