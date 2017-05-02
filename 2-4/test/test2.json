@@ -1,0 +1,11 @@
+{
+	"name" : "brainteaser",
+	"brainteaser": {
+		"description": "самая большая звезда на небе?",
+		"input": {
+			"type": "text",
+			"name": "answer"
+		},
+		"result": "солнце"
+	}
+}
