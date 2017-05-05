@@ -1,126 +1,102 @@
+<!DOCTYPE html>
+<html>
 <?php
 error_reporting(E_ALL);
+?>
+<head>
+  <meta charset="utf-8">
+  <title>Животные</title>
+</head>
+<body>
 
-$zivotniye = array(
+<h1>Животные</h1>
 
-    "Africa"        => array('Jyraff pyatnistiy','Gorilla'),
+<?php
+$Eurasia_animals = array("Giant Panda", "Gharial crocodile", "Mouflon");
+$Africa_animals = array("African Elephant", "Arabian Camel", "Assassin Bug");
+$North_A_animals = array("Agouti", "Alaskan Malamute");
+$South_A_animals = array("Black Caiman", "Capybara", "Common Iguana", "Dogfish Shark");
+$Australia_animals = array("Black Swan", "Dingo", "Frilled Lizard", "Kangaroo", "Minke Whale");
+$Antarctica_animals = array("Antarctic Krill", "Arctic Tern");
 
-    "Antarctica"    => array('Aptenodytes forsteri'),
+$All_animals = array ("Eurasia" => $Eurasia_animals,
+                      "Africa" => $Africa_animals,
+                      "NorthAmerica" => $North_A_animals,
+                      "SouthAmerica" => $South_A_animals,
+                      "Australia" => $Australia_animals,
+                      "Antarctica" => $Antarctica_animals
+                     );
 
-    "Europe"        => array('Bos primigenius','Wolverine'),
 
-    "Asia"          => array('Ailuropoda melanoleuca','Bengal Tiger'),
+//перемешать слова в массиве
+function mixer ($arr_mx,$key)
+{
+//преобразуем в строку
+    $im_str = implode(' ', $arr_mx[$key]);
+//преобразуем обратно в массив - разделитель пробел, т.е. разделяем массив по одному слову
+    $ex_str = explode(' ', $im_str);
+//перемешиваем массив
+    $x=shuffle($ex_str);
+//возвращаем значение
+    return $ex_str;
+}
 
-    "North America" => array('Haliaeetus leucocephalus','Gray Wolf'),
+//достать случайное слово из массива
+function one_word ($arr_ow)
+{
+//получаем случайный ключ массива
+$k=array_rand($arr_ow, 1);
+//достаем слово по ключу
+$word = $arr_ow[$k];
+//возвращаем значение
+return $word;
+}
 
-    "South America" => array('Panthera onca','Anaconda'),
+//создание общего нового массива в котором только названия животных состоящих из 2-х слов
+foreach($All_animals as $key => $vol)
+{
+   for($i=0; $i < count($All_animals[$key]); $i++)
+   {
+    //++поиск пробела - все животные состоящие из 2-х слов
+    $space = (strrpos($All_animals[$key][$i], ' '));
+        if ($space === false) {}
+        else
+             {
+    //++запись в новый массив
+    $tmp[$key][$i]=$All_animals[$key][$i];
+             }
+    }
+}
 
-    "Australia"     => array('Kangaroo','Koala bear')
-);
- 
- var_dump($zivotniye); 
+//работаем с новым массивом
+foreach($tmp as $key => $vol)
+{
 
-	// Создаем массив, куда мы сложим животных из двух слов
-$animals2 = [];
+//выводим континент
+echo "<h2>".$key."</h2>";
 
-foreach ($zivotniye as $animals) {
+//в $res уже перемешанные значения - осталось их сложить по словам с другим массивом
+$res[$key]=mixer($tmp,$key);
+//достаем случайный ключ из массива $tmp
+$rnd_key=array_rand($tmp);
 
-    foreach ($animals as $key => $animal) {
-
-        $count = substr_count($animal, ' ');
-
-        if ($count === 1) {
-
-            array_push($animals2, $animal);
+for($i=0; $i < count($res[$key]); $i++)
+    {
+//получаем случайное слово из случайного массива
+    $w1=one_word(mixer($tmp,$rnd_key));
+//сложение элементов массива
+    $res1[$key][$i]=$res[$key][$i]." ".$w1;
+//выводим на экран
+    echo $res1[$key][$i];
+//не рисовать запятую в конце строки
+     if ($i<count($res[$key])-1)
+        {
+         echo ", ";
         }
-    }
-}
-	
-// Создаем массив, куда мы сложим выдуманных животных
-$fantasyAnimals = [];
-
-while (count($animals2) !== 0) {
-
-     if (count($animals2) === 1) {
-
-        array_push($fantasyAnimals, $animals2[0]);
-
-        break;
-
-    } else {
-        $first = 0;
-        $rand = rand(1, count($animals2) - 1);
-        $firstElem = $animals2[$first];
-        $randElem = $animals2[$rand];
-        
-        $fantasyFirst = substr($firstElem, 0, strpos($firstElem, ' ')) . ' '
-
-            . substr($randElem, strpos($randElem, ' '));
-
-        $fantasySecond = substr($randElem, 0, strpos($randElem, ' ')) . ' '
-
-            . substr($firstElem, strpos($firstElem, ' '));
-
-        array_push($fantasyAnimals, $fantasyFirst, $fantasySecond);
-
-        unset($animals2[$first], $animals2[$rand]);
-
-        $animals2 = array_values($animals2);
-    }
-}
-
-$animalsHome = [];
-
-foreach ($fantasyAnimals as $elem) {
-
-    $words1 = explode(' ', $elem);
-
-    foreach ($zivotniye as $key => $animal) {
-
-        foreach ($animal as $value) {
-
-            $words2 = explode(' ', $value);
-
-            if ($words1[0] === $words2[0]) {
-
-                $animalsHome[$key][] = $elem;
-            }
-        }
-    }
-}
-	// Сортируем массив $animalsHome на основе ключей массива $zivotniye
-foreach ($zivotniye as $key => $item) $continents[] = $key;
-foreach ($animalsHome as $key => $animals) $arraysOfAnimals[$key] = $animals;
-$continents = array_flip($continents);
-$animalsHome = array_merge($continents, $arraysOfAnimals);
-
-function foo($array) {
-
-    foreach ($array as $key => $animals) {
-
-        echo "<div class=\"container\">";
-
-        echo "<h4>{$key}</h4>";
-
-        $anim = implode(",<br>", $animals);
-
-        echo "<p>{$anim}</p>";
-
-        echo "</div>";
-    }
+     }
 }
 
 ?>
 
-<!DOCTYPE html>
-<html>
-
-	<head>
-	<title>Животные</title>
-   </head>
-
-<body>
-		<h1>Животные в перемешку</h1>
-		<div><?php foo($animalsHome); ?></div>
 </body>
 </html>
