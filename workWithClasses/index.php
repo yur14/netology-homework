@@ -1,6 +1,12 @@
 <?php
 require_once __DIR__ . '/ClassNews.php';
 $news = new NewsClass();
+
+$referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+if (stristr($referer, 'ClassNews.php') && !empty($_SESSION['news'])) {
+    $allNews = $functions->pushNewsInFile($_SESSION['news']);
+    header('refresh: 0');
+}
 ?>
 <!doctype html>
 <html lang="ru">
@@ -11,7 +17,7 @@ $news = new NewsClass();
 <body>
 <h1>Главная</h1>
 <p>
-    <a href="http://webnotes.by/docs/php/inkapsulyaciya-v-php">Инкапсуляция</a> - это свойство системы в ООП, группировать свойства и методы
+    Инкапсуляция - это свойство системы в ООП, группировать свойства и методы
     над одним объектом в одном не доступном для обычного пользователя месте(файле).
     Доступ к данным должен осуществляться через специальные методы доступа (access methods)
     – «геттеры» (методы получения данных, Get) и «сеттеры» (методы установки данных, Set).
@@ -19,9 +25,11 @@ $news = new NewsClass();
     чтение при больших объемах кода, повышение безопасноти. К минусам отнесу только
     то что ООП надо применять по назначению.
 </p>
+
 <a href="index.php?id=0">Первая новость</a>
 <a href="index.php?id=1">Вторая новость</a>
 <a href="index.php?id=2">Третья новость</a>
+
 <h2><?php echo $news->getTitle(); ?></h2>
 <h3><?php echo $news->getText(); ?></h3>
 <h4><?php echo $news->getComment(); ?></h4>
