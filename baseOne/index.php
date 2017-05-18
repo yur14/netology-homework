@@ -1,4 +1,3 @@
-
 <?php
 include "main.php";
 if(isset($_GET["clearfilter"])){$_GET["name"]=NULL; $_GET["author"]=NULL;$_GET["year"]=NULL;}
@@ -6,7 +5,6 @@ if(!isset($_GET["name"])) { $_GET["name"]=NULL;}
 if(!isset($_GET["author"])) { $_GET["author"]=NULL;}
 if(!isset($_GET["year"])) { $_GET["year"]=NULL;}
 $arrayDbGlobal = fromDBtoArray($_GET["name"],$_GET["author"],$_GET["year"]);
-
 ?>
 
 <!DOCTYPE html>
