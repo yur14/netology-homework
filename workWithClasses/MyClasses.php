@@ -1,169 +1,129 @@
 <?php
-
-class Notebook
+///5 класов
+class Car
 {
-    private $name;
-    private $title;
-    private $price;
-    private $amount;
-    private $color;
-    private $property;
-    private $description;
+    const WHEELS = 4;
+    const HAS_GAS_TANK = true;
+    private $typeOfColor = 'White';
+    public $clearance;
+    // Цена цвета машины
+    public function priceOfColor($typeOfColor)
+    {
+        if ($typeOfColor == 'White') {
+            return $this->colorPrice;
+        }
+        if ($typeOfColor == 'Black') {
+            return $this->colorPrice + 2000;
+        }
+        return 0;
+    }
 
-    public function getName()
+    public function priceWithAdditions($leatherInterior = false)
     {
-        return $this->name;
-    }
-    public function getTitle()
-    {
-        return $this->getName() . $this->title;
-    }
-    public function getPrice()
-    {
+        if ($leatherInterior) {
+            // 150000 - цена кожаного салона
+            return $this->price + 15000 + $this->priceOfColor($this->typeOfColor);
+        }
+        if (!$leatherInterior) {
+            return $this->price + $this->priceOfColor($this->typeOfColor);
+        }
         return $this->price;
     }
-    public function getAmount()
+
+    public function __construct($model, $price, $color, $colorPrice)
     {
-        return $this->amount;
-    }
-    public function getProperty()
-    {
-        return $this->property;
-    }
-    public function getDescription()
-    {
-        return $this->description . $this->property . $this->color;
+        $this->model = $model;
+        $this->price = $price;
+        $this->color = $color;
+        $this->colorPrice = $colorPrice;
     }
 }
-
 class TV
 {
-    private $name;
-    private $color;
-    private $title;
-    private $price;
-    private $amount;
-    private $property;
-    private $description;
 
-    public function getName()
+    const REMOTE_CONTROLLER = true;
+    public $isHasOS;
+
+    public function diagonalSize()
     {
-        return $this->name;
+        return round(($this->width^2 + $this->height^2)^0.5, 2);
     }
-    public function getTitle()
+
+    public function __construct($model, $price, $widthInMeters, $heightInMeters)
     {
-        return $this->getName() . $this->title;
-    }
-    public function getPrice()
-    {
-        return $this->price;
-    }
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-    public function getProperty()
-    {
-        return $this->property;
-    }
-    public function getDescription()
-    {
-        return $this->description . $this->property . $this->color;
+        $this->model = $model;
+        $this->price = $price;
+        $this->width = $widthInMeters;
+        $this->height = $heightInMeters;
     }
 }
-
-class SmartPhone
+class Pen
 {
-    private $name;
-    private $title;
-    private $price;
-    private $description;
-    private $property;
-    private $color;
-    private $amount;
+    public $color;
+    public $inkColor;
+    public $priceInRubles;
 
-    public function getName()
+    public function isSuitableForEGE()
     {
-       return $this->name;
-    }
-    public function getTitle()
-    {
-        return $this->getName() . $this->title;
-    }
-    public function getPrice()
-    {
-        return $this->price;
-    }
-    public function getDescription()
-    {
-        return $this->description . $this->property . $this->color;
-    }
-    public function getAmount()
-    {
-        return $this->amount;
+        return $this->inkColor == 'black' || $this->inkColor == 'dark-blue';
     }
 }
-
-class SmartWatch
+class Duck
 {
-    private $name;
-    private $title;
-    private $price;
-    private $amount;
-    private $color;
-    private $property;
-    private $description;
+    // Просто попробовать
+    private $isPet;
 
-    public function getName()
+    public function setIsPetValue($value = false)
     {
-        return $this->name;
+        $this->isPet = $value;
     }
-    public function getTitle()
+
+    public function __construct($age, $color, $sex)
     {
-        return $this->getName() . $this->title;
-    }
-    public function getPrice()
-    {
-        return $this->price;
-    }
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-    public function getDescription()
-    {
-        return $this->description . $this->property . $this->color;
+        $this->age = $age;
+        $this->color = $color;
+        $this->sex = $sex;
     }
 }
-
-class Planshet
+class Product
 {
-    private $name;
-    private $title;
     private $price;
-    private $amount;
-    private $color;
-    private $property;
-    private $description;
+    public $discount = 10;
 
-    public function getName()
-    {
-        return $this->name;
-    }
-    public function getTitle()
-    {
-        return $this->getName() . $this->title;
-    }
     public function getPrice()
     {
-        return $this->price;
+        return $this->price * (1 - ($this->discount / 100));
     }
-    public function getAmount()
+
+    public function __construct($name, $price)
     {
-        return $this->amount;
-    }
-    public function getDescription()
-    {
-        return $this->description . $this->color . $this->property;
+        $this->price = $price;
+        $this->name = $name;
     }
 }
+// по 2 обьекта
+// Car
+$ford = new Car('BMW', 500000, 'white', 15000);
+$mersedes = new Car('Audi', 600000, 'black', 20000);
+// TV
+$smartTV = new TV('Sony', 10000, 2, 1.3);
+$basicTV = new TV('Saturn', 2000, 0.3, 0.2);
+$basicTV->isHasOS = false;
+// Pen
+$pen1 = new Pen();
+$pen1->color = 'red';
+$pen1->inkColor = 'blue';
+$pen1->priceInRubles = 20;
+
+$pen2 = new Pen();
+$pen2->color = 'blue';
+$pen2->inkColor = 'dark';
+$pen2->priceInRubles = 30;
+// Duck
+$duck = new Duck('1', 'grey', 'male');
+$duckPet = new Duck('2', 'white', 'famale');
+$duckPet->setIsPetValue(true);
+// Product
+$barOfChocolate = new Product('Володька', 100);
+$notebook = new Product('Lenovo', 55000);
+/*echo*/ $notebook->getPrice();
