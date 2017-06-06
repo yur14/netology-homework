@@ -1,64 +1,59 @@
 <?php
-$worldAnimals = [
-        'Europe' => ['Panthera tigris altaica', 'Pusa sibirica', 'Meles meles', 'Ursus maritimus', 'Ursus meles maritimus sibirica'],
-        'North America' => ['Ovis nivicola', 'Lynx rufus', 'Rangifer tarandus', 'Canis latrans', 'Grizzly bear', 'Grizzly rufus nivicola'],
-        'Africa' => ['Rhinocerotidae', 'Loxodonta africana', 'Pardus', 'Lemuridae', 'Lemuridae pardus africana'],
-        'South America' => ['Polar bears', 'Gray volf', 'Black bear', 'Cougar', 'Moose', 'Gray moose bear']
-               ];
-$animalFirst = [];
-$animalSecond = [];
-$animal = [];
-foreach ($worldAnimals as $keys => $values){
-    foreach($values as $key => $val){
-        // Разбиваем входные данные на слова, если 2 то true
-        $quant = count(explode(" ", $val)) == 2;
-        // Если входные данные равняются 2 то разбиваем данные по словам и помещаем в массив слов
-        if($quant){
-            $it = explode(" ", $val);
-            foreach($it as $k => $v){
-                $animal[] = $v;
-                // Если ключ = 0, то это первое слово, помещаем в массив с первыми словами, иначе в массив вторых слов.
-                if($k == 0){
-                    $animalFirst[] = $v;
-                    } else {
-                    $animalSecond[] = $v;
-                }
-            }
+	error_reporting(E_ALL);
+    $animals = [
+      "Africa" => ["African elephant", "Gavialis gangeticus"],
+      "Antarctica" => ["Stercorarius skua", "Aptenodytes patagonicus"],
+      "Australia" => ["Dendrolagus", "Cereopsis novaehollandiae"],
+      "Eurasia" => ["Ailuropoda melanoleuca", "Rangifer tarandus"],
+      "North America" => ["Taxidea taxus", "Crotalinae"],
+      "South America" => ["Ensifera ensifera", "Rhinoderma darwinii"]
+    ];
+    $two_words_names = [];
+    
+    foreach ($animals as $animals_list) {
+      foreach ($animals_list as $animal_name) {
+        if (str_word_count($animal_name) == 2) {
+          array_push($two_words_names, $animal_name);
         }
+      }
     }
-}
-// Перемешиваем массивы данных первых и вторых слов.
-shuffle($animalFirst);
-shuffle($animalSecond);
-$countAnimalFirst = count($animalFirst);
-$length = count($animal) - 1;
-function rnd($arr){
-    return rand(0,$arr - 1);
-}
-$parentCount=[];
-// Создаем массив с ключами названиями регионов
-foreach($worldAnimals as $key => $val){
-    $parentCount[$key] = "";
-}
-for($i = 0; $i < count($animalFirst); $i++){
-    foreach($worldAnimals as $key => $val){
-        foreach($val as $k => $v){
-            $quant = count(explode(" ", $v)) == 2; // Проверяем, что бы название состояло из 2х слов
-            $pos = strpos($v, $animalFirst[$i]) === 0; // Проверяем что бы слово было первым
-            if($quant && $pos){
-                $parentCount[$key][] = $animalFirst[$i] . " " . $animalSecond[$i];
-            }
+   
+    $first_words = [];
+    $second_words = [];
+    foreach ($two_words_names as $string) {
+      $words = explode(" ", $string);
+      array_push($first_words, $words[0]);
+      array_push($second_words, $words[1]);
+    }
+    shuffle($first_words);
+    shuffle($second_words);
+    $fantasy_names = [];
+    for ($i=0; $i < count($two_words_names); $i++) {
+      array_push($fantasy_names, $first_words[$i]." ".$second_words[$i]);
+    }
+    
+    $fantasy_animals = [
+      "Africa" => [],
+      "Antarctica" => [],
+      "Australia" => [],
+      "Eurasia" => [],
+      "North America" => [],
+      "South America" => []
+    ];
+    foreach ($fantasy_names as $fantasy_name) {
+      $fantasy_first_word = explode(" ", $fantasy_name)[0];
+      foreach ($animals as $continent => $animals_list) {
+        foreach ($animals_list as $animal_name) {
+          $default_first_word = explode(" ", $animal_name)[0];
+          if ($fantasy_first_word === $default_first_word) {
+            array_push($fantasy_animals[$continent], $fantasy_name);
+          }
         }
+      }
     }
-}
-// Выводим полученный массив выдуманных животных с изначальным континентом.
-foreach($parentCount as $key => $val){
-    echo "<h2> $key:</h2> <ol>";
-    foreach($val as $k => $v){
-        if($i < count($v)-1){
-            echo "<li> $v,</li>";
-        }
+    
+    foreach ($fantasy_animals as $continent => $animals_list) {
+      echo "<h2>{$continent}</h2>";
+      echo implode(", ", $animals_list)."<br>";
     }
-        echo "</ol>";
-        echo implode(", ", $val), ".";
-}
+ 
